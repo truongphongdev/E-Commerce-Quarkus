@@ -63,11 +63,11 @@ public class Product extends PanacheEntityBase{
     private Category category;
 
     // relationship with ProductVariant (1-N)
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private java.util.List<ProductVariant> variants;
 
     // relationship with ProductImage (1-N)
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL) 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private java.util.List<ProductImage> images;
 
     // relationship with Review (1-N)
@@ -77,4 +77,8 @@ public class Product extends PanacheEntityBase{
     // relationship with Wishlist (1-N)
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private java.util.List<Wishlist> wishlists;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supplier_id")
+    private Supplier supplier;
 }

@@ -1,7 +1,10 @@
 package com.phong.it.entity;
 
 import java.math.BigDecimal;
+import java.util.List;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -47,4 +51,18 @@ public class ProductVariant extends PanacheEntityBase{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
+
+    // relationship with CartItem (1-N)
+    @OneToMany(mappedBy = "variant")
+    private List<CartItem> cartItems;
+
+
+    // relationship with OrderItem (1-N)
+    @OneToMany(mappedBy = "variant")
+    private List<OrderItem> orderItems;
+
+
+    // relationship with StockMovement (1-N)
+    @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL)
+    private List<StockMovement> stockMovements;
 }
