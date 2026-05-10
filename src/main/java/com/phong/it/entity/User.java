@@ -8,6 +8,8 @@ import java.util.Set;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -33,11 +35,11 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "users")
-@Getter 
+@Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends PanacheEntityBase{
+public class User extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,6 +56,8 @@ public class User extends PanacheEntityBase{
     @NotBlank(message = "Mật khẩu không được để trống")
     @Size(min = 6, message = "Password phải từ 6 ký tự")
     @Column(nullable = false)
+    @JsonIgnore
+    @ToString.Exclude
     private String password;
 
     @NotBlank(message = "Họ và tên không được để trống")
@@ -70,11 +74,7 @@ public class User extends PanacheEntityBase{
 
     // many to many with Role
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "users_roles",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
+    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     @ToString.Exclude
     private Set<Role> roles = new HashSet<>();
 
@@ -82,7 +82,6 @@ public class User extends PanacheEntityBase{
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private RefreshToken refreshToken;
-
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Wishlist> wishlists;
