@@ -2,14 +2,11 @@ package com.phong.it.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
-import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "stock_movements")
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
 public class StockMovement extends PanacheEntityBase {
 
     @Id
@@ -32,4 +29,66 @@ public class StockMovement extends PanacheEntityBase {
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    // --- Generated Getters, Setters, and Constructors ---
+
+    public StockMovement() {}
+
+    public StockMovement(Long id, ProductVariant variant, Integer quantity, MovementType movementType, String note, LocalDateTime createdAt) {
+        this.id = id;
+        this.variant = variant;
+        this.quantity = quantity;
+        this.movementType = movementType;
+        this.note = note;
+        this.createdAt = createdAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public ProductVariant getVariant() {
+        return variant;
+    }
+
+    public void setVariant(ProductVariant variant) {
+        this.variant = variant;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public MovementType getMovementType() {
+        return movementType;
+    }
+
+    public void setMovementType(MovementType movementType) {
+        this.movementType = movementType;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
 }

@@ -17,16 +17,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;  
+  
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "product_variants")
 public class ProductVariant extends PanacheEntityBase{
 
@@ -56,13 +49,100 @@ public class ProductVariant extends PanacheEntityBase{
     @OneToMany(mappedBy = "variant")
     private List<CartItem> cartItems;
 
-
     // relationship with OrderItem (1-N)
     @OneToMany(mappedBy = "variant")
     private List<OrderItem> orderItems;
 
-
     // relationship with StockMovement (1-N)
     @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL)
     private List<StockMovement> stockMovements;
+
+    // --- Generated Getters, Setters, and Constructors ---
+
+    public ProductVariant() {}
+
+    public ProductVariant(Long id, String name, String sku, BigDecimal price, Integer stockQuantity, Product product, List<CartItem> cartItems, List<OrderItem> orderItems, List<StockMovement> stockMovements) {
+        this.id = id;
+        this.name = name;
+        this.sku = sku;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+        this.product = product;
+        this.cartItems = cartItems;
+        this.orderItems = orderItems;
+        this.stockMovements = stockMovements;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Integer getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(Integer stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public List<StockMovement> getStockMovements() {
+        return stockMovements;
+    }
+
+    public void setStockMovements(List<StockMovement> stockMovements) {
+        this.stockMovements = stockMovements;
+    }
+
 }

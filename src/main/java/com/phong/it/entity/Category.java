@@ -22,16 +22,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "categories")
 public class Category extends PanacheEntityBase{
 
@@ -47,7 +39,6 @@ public class Category extends PanacheEntityBase{
     @Column(unique = true, nullable = false)
     private String slug;
 
-
     @NotBlank(message = "Trường mô tả không được để trống")
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -59,7 +50,6 @@ public class Category extends PanacheEntityBase{
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
 
     // -- Relationships --
 
@@ -75,4 +65,93 @@ public class Category extends PanacheEntityBase{
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private List<Category> children = new ArrayList<>();
+
+    // --- Generated Getters, Setters, and Constructors ---
+
+    public Category() {}
+
+    public Category(Long id, String name, String slug, String description, LocalDateTime createdAt, LocalDateTime updatedAt, java.util.List<Product> products, Category parent, List<Category> children) {
+        this.id = id;
+        this.name = name;
+        this.slug = slug;
+        this.description = description;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.products = products;
+        this.parent = parent;
+        this.children = children;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public java.util.List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(java.util.List<Product> products) {
+        this.products = products;
+    }
+
+    public Category getParent() {
+        return parent;
+    }
+
+    public void setParent(Category parent) {
+        this.parent = parent;
+    }
+
+    public List<Category> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Category> children) {
+        this.children = children;
+    }
+
 }

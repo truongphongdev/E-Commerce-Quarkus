@@ -16,18 +16,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Table(name = "refresh_tokens")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class RefreshToken extends PanacheEntityBase{
     
     @Id
@@ -52,6 +43,67 @@ public class RefreshToken extends PanacheEntityBase{
     // one to one with user
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", unique = true, nullable = false)
-    @ToString.Exclude
     private User user;
+
+    // --- Generated Getters, Setters, and Constructors ---
+
+    public RefreshToken() {}
+
+    public RefreshToken(Long id, String token, java.time.Instant expiryDate, LocalDateTime createdAt, LocalDateTime updatedAt, User user) {
+        this.id = id;
+        this.token = token;
+        this.expiryDate = expiryDate;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.user = user;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public java.time.Instant getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(java.time.Instant expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
 }

@@ -11,16 +11,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "product_images")
 public class ProductImage extends PanacheEntityBase{
 
@@ -42,4 +34,57 @@ public class ProductImage extends PanacheEntityBase{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
+
+    // --- Generated Getters, Setters, and Constructors ---
+
+    public ProductImage() {}
+
+    public ProductImage(Long id, String imageUrl, Boolean isMain, Long sortOrder, Product product) {
+        this.id = id;
+        this.imageUrl = imageUrl;
+        this.isMain = isMain;
+        this.sortOrder = sortOrder;
+        this.product = product;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public Boolean isIsMain() {
+        return isMain;
+    }
+
+    public void setIsMain(Boolean isMain) {
+        this.isMain = isMain;
+    }
+
+    public Long getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(Long sortOrder) {
+        this.sortOrder = sortOrder;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
 }

@@ -27,18 +27,9 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class User extends PanacheEntityBase {
 
     @Id
@@ -57,7 +48,6 @@ public class User extends PanacheEntityBase {
     @Size(min = 6, message = "Password phải từ 6 ký tự")
     @Column(nullable = false)
     @JsonIgnore
-    @ToString.Exclude
     private String password;
 
     @NotBlank(message = "Họ và tên không được để trống")
@@ -75,12 +65,10 @@ public class User extends PanacheEntityBase {
     // many to many with Role
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    @ToString.Exclude
     private Set<Role> roles = new HashSet<>();
 
     // one to one with RefreshToken
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
     private RefreshToken refreshToken;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -98,4 +86,138 @@ public class User extends PanacheEntityBase {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Address> addresses;
+
+    // --- Generated Getters, Setters, and Constructors ---
+
+    public User() {}
+
+    public User(Long id, String username, String email, String password, String fullName, LocalDateTime createdAt, LocalDateTime updatedAt, Set<Role> roles, RefreshToken refreshToken, List<Wishlist> wishlists, List<Review> reviews, Cart cart, List<Order> orders, List<Address> addresses) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.fullName = fullName;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.roles = roles;
+        this.refreshToken = refreshToken;
+        this.wishlists = wishlists;
+        this.reviews = reviews;
+        this.cart = cart;
+        this.orders = orders;
+        this.addresses = addresses;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public RefreshToken getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(RefreshToken refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public List<Wishlist> getWishlists() {
+        return wishlists;
+    }
+
+    public void setWishlists(List<Wishlist> wishlists) {
+        this.wishlists = wishlists;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
+
 }

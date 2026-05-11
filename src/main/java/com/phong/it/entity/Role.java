@@ -16,18 +16,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Table(name = "roles")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Role extends PanacheEntityBase{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +41,67 @@ public class Role extends PanacheEntityBase{
 
     // many to many with User
     @ManyToMany(mappedBy = "roles")
-    @ToString.Exclude
     private Set<User> users = new HashSet<>();
+
+    // --- Generated Getters, Setters, and Constructors ---
+
+    public Role() {}
+
+    public Role(Long id, String name, String description, LocalDateTime createdAt, LocalDateTime updatedAt, Set<User> users) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.users = users;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
 }

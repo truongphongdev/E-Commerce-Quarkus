@@ -10,15 +10,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "cart_items")
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
 public class CartItem extends PanacheEntityBase{
     
     @Id
@@ -35,4 +29,48 @@ public class CartItem extends PanacheEntityBase{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "variant_id")
     private ProductVariant variant;
+
+    // --- Generated Getters, Setters, and Constructors ---
+
+    public CartItem() {}
+
+    public CartItem(Long id, Integer quantity, Cart cart, ProductVariant variant) {
+        this.id = id;
+        this.quantity = quantity;
+        this.cart = cart;
+        this.variant = variant;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public ProductVariant getVariant() {
+        return variant;
+    }
+
+    public void setVariant(ProductVariant variant) {
+        this.variant = variant;
+    }
+
 }

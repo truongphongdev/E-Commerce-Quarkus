@@ -12,16 +12,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 
 @Entity
 @Table(name = "order_items")
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
 public class OrderItem extends PanacheEntityBase{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,4 +33,57 @@ public class OrderItem extends PanacheEntityBase{
 
     @Column(nullable = false)
     private BigDecimal price; // Giá tại thời điểm chốt đơn
+
+    // --- Generated Getters, Setters, and Constructors ---
+
+    public OrderItem() {}
+
+    public OrderItem(Long id, Order order, ProductVariant variant, Integer quantity, BigDecimal price) {
+        this.id = id;
+        this.order = order;
+        this.variant = variant;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public ProductVariant getVariant() {
+        return variant;
+    }
+
+    public void setVariant(ProductVariant variant) {
+        this.variant = variant;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
 }

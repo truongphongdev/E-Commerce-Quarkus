@@ -17,16 +17,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "reviews")
 public class Review extends PanacheEntityBase{
     @Id
@@ -48,7 +40,6 @@ public class Review extends PanacheEntityBase{
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-
     // --relationships--
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
@@ -60,4 +51,84 @@ public class Review extends PanacheEntityBase{
 
     @Column(name = "user_full_name")
     private String userFullName;
+
+    // --- Generated Getters, Setters, and Constructors ---
+
+    public Review() {}
+
+    public Review(Long id, Integer rating, String comment, Boolean status, LocalDateTime createdAt, Product product, User user, String userFullName) {
+        this.id = id;
+        this.rating = rating;
+        this.comment = comment;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.product = product;
+        this.user = user;
+        this.userFullName = userFullName;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getUserFullName() {
+        return userFullName;
+    }
+
+    public void setUserFullName(String userFullName) {
+        this.userFullName = userFullName;
+    }
+
 }

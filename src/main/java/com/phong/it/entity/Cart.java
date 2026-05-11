@@ -19,15 +19,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "carts")
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
 public class Cart extends PanacheEntityBase{
     
     @Id
@@ -48,4 +42,57 @@ public class Cart extends PanacheEntityBase{
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> items = new ArrayList<>();
+
+    // --- Generated Getters, Setters, and Constructors ---
+
+    public Cart() {}
+
+    public Cart(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User user, List<CartItem> items) {
+        this.id = id;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.user = user;
+        this.items = items;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<CartItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<CartItem> items) {
+        this.items = items;
+    }
+
 }

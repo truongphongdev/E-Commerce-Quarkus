@@ -12,15 +12,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "addresses")
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
 public class Address extends PanacheEntityBase {
 
     @Id
@@ -56,4 +50,93 @@ public class Address extends PanacheEntityBase {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    // --- Generated Getters, Setters, and Constructors ---
+
+    public Address() {}
+
+    public Address(Long id, String fullName, String phoneNumber, String province, String district, String ward, String detailAddress, Boolean isDefault, User user) {
+        this.id = id;
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.province = province;
+        this.district = district;
+        this.ward = ward;
+        this.detailAddress = detailAddress;
+        this.isDefault = isDefault;
+        this.user = user;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getWard() {
+        return ward;
+    }
+
+    public void setWard(String ward) {
+        this.ward = ward;
+    }
+
+    public String getDetailAddress() {
+        return detailAddress;
+    }
+
+    public void setDetailAddress(String detailAddress) {
+        this.detailAddress = detailAddress;
+    }
+
+    public Boolean isIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(Boolean isDefault) {
+        this.isDefault = isDefault;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
 }
