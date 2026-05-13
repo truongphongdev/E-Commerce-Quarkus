@@ -1,4 +1,4 @@
-# 🛒 E-commerce API - Quarkus Project
+# 🛒 E-commerce API - Quarkus Project  ./mvnw quarkus:dev
 
 ## 📝 Lưu ý cho cộng tác viên
 
