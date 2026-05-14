@@ -11,7 +11,7 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
-@Path("/api/product-variants")
+@Path("/api/v1/product-variants")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ProductVariantResource {

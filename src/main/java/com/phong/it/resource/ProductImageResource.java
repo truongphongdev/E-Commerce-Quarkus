@@ -11,7 +11,7 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
-@Path("/api/product-images")
+@Path("/api/v1/product-images")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ProductImageResource {

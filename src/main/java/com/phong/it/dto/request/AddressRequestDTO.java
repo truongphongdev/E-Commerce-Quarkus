@@ -23,8 +23,7 @@ public record AddressRequestDTO(
     @NotBlank(message = "Địa chỉ cụ thể không được để trống")
     String detailAddress,
 
-    Boolean isDefault,
+    Boolean isDefault
     
-    Long userId
 ) {
 }

@@ -12,7 +12,7 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
-@Path("/api/orders")
+@Path("/api/v1/orders")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class OrderResource {

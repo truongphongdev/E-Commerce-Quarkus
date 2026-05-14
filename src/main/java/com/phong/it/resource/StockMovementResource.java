@@ -11,7 +11,7 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
-@Path("/api/stock-movements")
+@Path("/api/v1/stock-movements")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class StockMovementResource {
