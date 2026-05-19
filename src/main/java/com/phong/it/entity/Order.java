@@ -25,7 +25,7 @@ import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "orders")
-public class Order extends PanacheEntityBase{
+public class Order extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,7 +40,8 @@ public class Order extends PanacheEntityBase{
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.PENDING;
 
-    // Thông tin giao hàng (có thể tách ra bảng riêng nếu muốn quản lý nhiều địa chỉ)
+    // Thông tin giao hàng (có thể tách ra bảng riêng nếu muốn quản lý nhiều địa
+    // chỉ)
     @NotBlank(message = "Tên người nhận không được để trống")
     @Column(name = "shipping_full_name")
     private String shippingFullName;
@@ -63,7 +64,7 @@ public class Order extends PanacheEntityBase{
     private String detailAddress;
 
     // Ghi chú giao hàng từ khách hàng (ví dụ: Giao giờ hành chính)
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "shipping_note", columnDefinition = "TEXT")
     private String shippingNote;
 
     @CreationTimestamp
@@ -93,9 +94,13 @@ public class Order extends PanacheEntityBase{
 
     // --- Generated Getters, Setters, and Constructors ---
 
-    public Order() {}
+    public Order() {
+    }
 
-    public Order(Long id, User user, BigDecimal totalPrice, OrderStatus status, String shippingFullName, String shippingPhone, String province, String district, String ward, String detailAddress, String shippingNote, LocalDateTime createdAt, List<OrderItem> orderItems, Coupon coupon, BigDecimal discountAmount, PaymentMethod paymentMethod, Payment payment) {
+    public Order(Long id, User user, BigDecimal totalPrice, OrderStatus status, String shippingFullName,
+            String shippingPhone, String province, String district, String ward, String detailAddress,
+            String shippingNote, LocalDateTime createdAt, List<OrderItem> orderItems, Coupon coupon,
+            BigDecimal discountAmount, PaymentMethod paymentMethod, Payment payment) {
         this.id = id;
         this.user = user;
         this.totalPrice = totalPrice;
