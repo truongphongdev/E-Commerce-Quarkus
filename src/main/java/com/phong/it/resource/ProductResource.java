@@ -57,4 +57,23 @@ public class ProductResource {
         productService.delete(id);
         return Response.noContent().build();
     }
+
+    @GET
+    @Path("/search")
+    @PermitAll
+    public Response search(
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("size") @DefaultValue("10") int size,
+            @QueryParam("keyword") String keyword,
+            @QueryParam("categoryId") Long categoryId,
+            @QueryParam("brand") String brand,
+            @QueryParam("minPrice") java.math.BigDecimal minPrice,
+            @QueryParam("maxPrice") java.math.BigDecimal maxPrice,
+            @QueryParam("sortBy") String sortBy) {
+        
+        var result = productService.findWithFilters(
+            page, size, keyword, categoryId, brand, minPrice, maxPrice, sortBy
+        );
+        return Response.ok(result).build();
+    }
 }

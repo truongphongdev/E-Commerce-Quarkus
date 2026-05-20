@@ -1,6 +1,7 @@
 package com.phong.it.service.impl;
 
 import com.phong.it.dto.request.ProductRequestDTO;
+import com.phong.it.dto.response.PageResponseDTO;
 import com.phong.it.dto.response.ProductResponseDTO;
 import com.phong.it.entity.Category;
 import com.phong.it.entity.Product;
@@ -14,6 +15,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.BadRequestException;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -137,4 +139,28 @@ public class ProductServiceImpl implements ProductService {
             throw new NotFoundException("Không tìm thấy sản phẩm với ID: " + id);
         }
     }
+
+    @Override
+    public PageResponseDTO<ProductResponseDTO> findWithFilters(
+        int page, int size, String keyword, Long categoryId, 
+        String brand, BigDecimal minPrice, BigDecimal maxPrice, String sortBy) {
+        
+        var query = productRepository.findWithFilters(keyword, categoryId, brand, minPrice, maxPrice, sortBy);
+        
+        var panachePage = query.page(page, size);
+        
+        List<ProductResponseDTO> content = panachePage.list().stream()
+                .map(productMapper::toResponseDTO)
+                .collect(Collectors.toList());
+
+        return new PageResponseDTO<>(
+                content,
+                page,
+                size,
+                query.count(),         
+                panachePage.pageCount(), 
+                page >= panachePage.pageCount() - 1 // Có phải trang cuối không
+        );
+    }
+
 }
