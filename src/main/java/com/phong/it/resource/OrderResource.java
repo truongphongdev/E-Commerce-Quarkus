@@ -4,36 +4,41 @@ import com.phong.it.dto.request.OrderRequestDTO;
 import com.phong.it.dto.response.OrderResponseDTO;
 import com.phong.it.entity.OrderStatus;
 import com.phong.it.service.OrderService;
+import io.quarkus.security.Authenticated;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
 import java.util.List;
 
 @Path("/api/v1/orders")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Authenticated
 public class OrderResource {
 
     @Inject
     OrderService orderService;
 
+    @Inject
+    JsonWebToken jwt;
+
+    private Long getUserId() {
+        return Long.parseLong(jwt.getSubject());
+    }
+
     @POST
-    public Response placeOrder(@HeaderParam("User-ID") Long userId, @Valid OrderRequestDTO requestDTO) {
-        if (userId == null) {
-            throw new BadRequestException("Vui lòng cung cấp User-ID trong Header");
-        }
+    public Response placeOrder(@Valid OrderRequestDTO requestDTO) {
+        Long userId = getUserId();
         OrderResponseDTO responseDTO = orderService.placeOrder(userId, requestDTO);
         return Response.status(Response.Status.CREATED).entity(responseDTO).build();
     }
 
     @GET
-    public Response getOrderHistory(@HeaderParam("User-ID") Long userId) {
-        if (userId == null) {
-            throw new BadRequestException("Vui lòng cung cấp User-ID trong Header");
-        }
+    public Response getOrderHistory() {
+        Long userId = getUserId();
         List<OrderResponseDTO> orders = orderService.getOrderHistory(userId);
         return Response.ok(orders).build();
     }

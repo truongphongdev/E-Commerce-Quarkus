@@ -3,6 +3,8 @@ package com.phong.it.resource;
 import com.phong.it.dto.request.AddToCartRequestDTO;
 import com.phong.it.dto.response.CartResponseDTO;
 import com.phong.it.service.CartService;
+import io.quarkus.security.Authenticated;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -12,26 +14,30 @@ import jakarta.ws.rs.core.Response;
 @Path("/api/v1/cart")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Authenticated
 public class CartResource {
 
     @Inject
     CartService cartService;
 
+    @Inject
+    JsonWebToken jwt;
+
+    private Long getUserId() {
+        return Long.parseLong(jwt.getSubject());
+    }
+
     @GET
-    public Response getCart(@HeaderParam("User-ID") Long userId) {
-        if (userId == null) {
-            throw new BadRequestException("Vui lòng cung cấp User-ID trong Header");
-        }
+    public Response getCart() {
+        Long userId = getUserId();
         CartResponseDTO responseDTO = cartService.getCartByUserId(userId);
         return Response.ok(responseDTO).build();
     }
 
     @POST
     @Path("/items")
-    public Response addToCart(@HeaderParam("User-ID") Long userId, @Valid AddToCartRequestDTO requestDTO) {
-        if (userId == null) {
-            throw new BadRequestException("Vui lòng cung cấp User-ID trong Header");
-        }
+    public Response addToCart(@Valid AddToCartRequestDTO requestDTO) {
+        Long userId = getUserId();
         CartResponseDTO responseDTO = cartService.addToCart(userId, requestDTO);
         return Response.ok(responseDTO).build();
     }
@@ -39,12 +45,9 @@ public class CartResource {
     @PUT
     @Path("/items/{itemId}")
     public Response updateQuantity(
-            @HeaderParam("User-ID") Long userId, 
             @PathParam("itemId") Long itemId, 
             @QueryParam("quantity") Integer quantity) {
-        if (userId == null) {
-            throw new BadRequestException("Vui lòng cung cấp User-ID trong Header");
-        }
+        Long userId = getUserId();
         if (quantity == null) {
             throw new BadRequestException("Vui lòng cung cấp tham số quantity (số lượng)");
         }
@@ -54,10 +57,8 @@ public class CartResource {
 
     @DELETE
     @Path("/items/{itemId}")
-    public Response removeItem(@HeaderParam("User-ID") Long userId, @PathParam("itemId") Long itemId) {
-        if (userId == null) {
-            throw new BadRequestException("Vui lòng cung cấp User-ID trong Header");
-        }
+    public Response removeItem(@PathParam("itemId") Long itemId) {
+        Long userId = getUserId();
         CartResponseDTO responseDTO = cartService.removeItem(userId, itemId);
         return Response.ok(responseDTO).build();
     }

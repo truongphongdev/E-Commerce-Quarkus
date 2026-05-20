@@ -111,6 +111,14 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
+    public CouponResponseDTO validateCoupon(String code, Double orderAmount) {
+        if (orderAmount == null) {
+            throw new BadRequestException("Giá trị đơn hàng không hợp lệ");
+        }
+        return validateCoupon(code, BigDecimal.valueOf(orderAmount));
+    }
+
+    @Override
     public BigDecimal calculateDiscount(String code, BigDecimal orderValue) {
         Coupon coupon = getValidCouponEntity(code, orderValue);
         

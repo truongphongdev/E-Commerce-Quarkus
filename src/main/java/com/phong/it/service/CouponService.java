@@ -13,6 +13,7 @@ public interface CouponService {
     List<CouponResponseDTO> getAll();
     CouponResponseDTO getById(Long id);
     CouponResponseDTO validateCoupon(String code, BigDecimal orderValue);
+    CouponResponseDTO validateCoupon(String code, Double orderAmount);
     BigDecimal calculateDiscount(String code, BigDecimal orderValue);
     void updateUsageCount(String code);
 }

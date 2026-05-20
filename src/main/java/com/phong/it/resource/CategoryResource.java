@@ -3,12 +3,13 @@ package com.phong.it.resource;
 import com.phong.it.dto.request.CategoryRequestDTO;
 import com.phong.it.dto.response.CategoryResponseDTO;
 import com.phong.it.service.CategoryService;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
 import java.util.List;
 
 @Path("/api/v1/categories")
@@ -20,6 +21,7 @@ public class CategoryResource {
     CategoryService categoryService;
 
     @POST
+    @RolesAllowed({"ADMIN"})
     public Response create(@Valid CategoryRequestDTO requestDTO) {
         CategoryResponseDTO responseDTO = categoryService.create(requestDTO);
         return Response.status(Response.Status.CREATED).entity(responseDTO).build();
@@ -27,12 +29,14 @@ public class CategoryResource {
 
     @GET
     @Path("/{id}")
+    @PermitAll
     public Response getById(@PathParam("id") Long id) {
         CategoryResponseDTO responseDTO = categoryService.getById(id);
         return Response.ok(responseDTO).build();
     }
 
     @GET
+    @PermitAll
     public Response getAll() {
         List<CategoryResponseDTO> categories = categoryService.getAll();
         return Response.ok(categories).build();
@@ -40,6 +44,7 @@ public class CategoryResource {
 
     @GET
     @Path("/roots")
+    @PermitAll
     public Response getRootCategories() {
         List<CategoryResponseDTO> roots = categoryService.getRootCategories();
         return Response.ok(roots).build();
@@ -47,6 +52,7 @@ public class CategoryResource {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({"ADMIN"})
     public Response update(@PathParam("id") Long id, @Valid CategoryRequestDTO requestDTO) {
         CategoryResponseDTO responseDTO = categoryService.update(id, requestDTO);
         return Response.ok(responseDTO).build();
@@ -54,6 +60,7 @@ public class CategoryResource {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({"ADMIN"})
     public Response delete(@PathParam("id") Long id) {
         categoryService.delete(id);
         return Response.noContent().build();

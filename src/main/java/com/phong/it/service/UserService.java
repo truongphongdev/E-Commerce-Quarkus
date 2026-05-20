@@ -16,4 +16,7 @@ public interface UserService {
     UserResponseDTO updateUser(Long id, UserRegisterRequestDTO requestDTO);
 
     void deleteUser(Long id);
+
+    UserResponseDTO login(String username, String password);
 }
+

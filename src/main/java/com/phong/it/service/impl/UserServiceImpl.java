@@ -136,4 +136,19 @@ public class UserServiceImpl implements UserService {
         
         userRepository.delete(existingUser);
     }
+
+    @Override
+    public UserResponseDTO login(String username, String password) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new WebApplicationException("Tên đăng nhập hoặc mật khẩu không chính xác", Status.UNAUTHORIZED);
+        }
+
+        if (!BcryptUtil.matches(password, user.getPassword())) {
+            throw new WebApplicationException("Tên đăng nhập hoặc mật khẩu không chính xác", Status.UNAUTHORIZED);
+        }
+
+        return userMapper.toResponseDTO(user);
+    }
 }
+

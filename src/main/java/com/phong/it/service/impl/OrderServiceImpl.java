@@ -6,8 +6,10 @@ import com.phong.it.dto.response.OrderResponseDTO;
 import com.phong.it.entity.*;
 import com.phong.it.mapper.OrderMapper;
 import com.phong.it.repository.CartRepository;
+import com.phong.it.repository.CouponRepository;
 import com.phong.it.repository.OrderRepository;
 import com.phong.it.repository.UserRepository;
+import com.phong.it.service.CouponService;
 import com.phong.it.service.OrderService;
 import com.phong.it.service.StockMovementService;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -38,6 +40,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Inject
     OrderMapper orderMapper;
+
+    @Inject
+    CouponService couponService;
+
+    @Inject
+    CouponRepository couponRepository;
 
     @Override
     @Transactional
@@ -89,17 +97,38 @@ public class OrderServiceImpl implements OrderService {
             stockMovementService.create(movementDTO);
         }
 
-        // Tạm thời chưa xử lý mã giảm giá phức tạp, gán tổng tiền
-        if (order.getDiscountAmount() != null) {
-            totalPrice = totalPrice.subtract(order.getDiscountAmount());
+        // Xử lý mã giảm giá (Coupon) thực tế
+        String couponCode = requestDTO.couponCode();
+        if (couponCode != null && !couponCode.trim().isEmpty()) {
+            // Xác thực Coupon (sẽ tự động ném ngoại lệ nếu không hợp lệ)
+            couponService.validateCoupon(couponCode, totalPrice);
+
+            // Tính số tiền được giảm giá
+            BigDecimal discount = couponService.calculateDiscount(couponCode, totalPrice);
+
+            // Lấy Coupon entity để lưu vào Đơn hàng
+            Coupon coupon = couponRepository.findByCode(couponCode);
+
+            order.setCoupon(coupon);
+            order.setDiscountAmount(discount);
+            totalPrice = totalPrice.subtract(discount);
+        } else {
+            order.setDiscountAmount(BigDecimal.ZERO);
+            order.setCoupon(null);
         }
+
         if (totalPrice.compareTo(BigDecimal.ZERO) < 0) {
             totalPrice = BigDecimal.ZERO;
         }
         order.setTotalPrice(totalPrice);
 
-        // Lưu đơn hàng
+        // Lưu đơn hàng vào cơ sở dữ liệu
         orderRepository.persist(order);
+
+        // Cập nhật tăng số lần sử dụng của Coupon
+        if (couponCode != null && !couponCode.trim().isEmpty()) {
+            couponService.updateUsageCount(couponCode);
+        }
 
         // Dọn dẹp giỏ hàng
         cart.getItems().clear();
