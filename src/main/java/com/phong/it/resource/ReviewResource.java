@@ -2,6 +2,7 @@ package com.phong.it.resource;
 
 import com.phong.it.dto.request.ReviewRequestDTO;
 import com.phong.it.dto.response.ReviewResponseDTO;
+import com.phong.it.helper.ApiResponse;
 import com.phong.it.service.ReviewService;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.PermitAll;
@@ -34,14 +35,16 @@ public class ReviewResource {
     public Response create(@Valid ReviewRequestDTO requestDTO) {
         Long userId = getUserId();
         ReviewResponseDTO responseDTO = reviewService.create(userId, requestDTO);
-        return Response.status(Response.Status.CREATED).entity(responseDTO).build();
+        return Response.status(Response.Status.CREATED)
+                .entity(ApiResponse.success(responseDTO, "Gửi đánh giá thành công"))
+                .build();
     }
 
     @GET
     @RolesAllowed({"ADMIN"})
     public Response getAll() {
         List<ReviewResponseDTO> reviews = reviewService.getAll();
-        return Response.ok(reviews).build();
+        return Response.ok(ApiResponse.success(reviews)).build();
     }
 
     @GET
@@ -51,7 +54,7 @@ public class ReviewResource {
             @PathParam("productId") Long productId, 
             @QueryParam("approvedOnly") @DefaultValue("true") boolean approvedOnly) {
         List<ReviewResponseDTO> reviews = reviewService.getReviewsByProductId(productId, approvedOnly);
-        return Response.ok(reviews).build();
+        return Response.ok(ApiResponse.success(reviews)).build();
     }
 
     @GET
@@ -59,7 +62,7 @@ public class ReviewResource {
     @PermitAll
     public Response getById(@PathParam("id") Long id) {
         ReviewResponseDTO responseDTO = reviewService.getById(id);
-        return Response.ok(responseDTO).build();
+        return Response.ok(ApiResponse.success(responseDTO)).build();
     }
 
     @PUT
@@ -68,7 +71,7 @@ public class ReviewResource {
     public Response update(@PathParam("id") Long id, @Valid ReviewRequestDTO requestDTO) {
         Long userId = getUserId();
         ReviewResponseDTO responseDTO = reviewService.update(userId, id, requestDTO);
-        return Response.ok(responseDTO).build();
+        return Response.ok(ApiResponse.success(responseDTO, "Cập nhật đánh giá thành công")).build();
     }
 
     @PUT
@@ -76,7 +79,7 @@ public class ReviewResource {
     @RolesAllowed({"ADMIN"})
     public Response approveReview(@PathParam("id") Long id) {
         ReviewResponseDTO responseDTO = reviewService.approveReview(id);
-        return Response.ok(responseDTO).build();
+        return Response.ok(ApiResponse.success(responseDTO, "Duyệt đánh giá thành công")).build();
     }
 
     @DELETE
@@ -85,6 +88,6 @@ public class ReviewResource {
     public Response delete(@PathParam("id") Long id) {
         Long userId = getUserId();
         reviewService.delete(userId, id);
-        return Response.noContent().build();
+        return Response.ok(ApiResponse.success(null, "Xóa đánh giá thành công")).build();
     }
 }

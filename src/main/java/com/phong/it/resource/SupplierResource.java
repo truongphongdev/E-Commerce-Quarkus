@@ -2,6 +2,7 @@ package com.phong.it.resource;
 
 import com.phong.it.dto.request.SupplierRequestDTO;
 import com.phong.it.dto.response.SupplierResponseDTO;
+import com.phong.it.helper.ApiResponse;
 import com.phong.it.service.SupplierService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -23,33 +24,35 @@ public class SupplierResource {
     @POST
     public Response create(@Valid SupplierRequestDTO requestDTO) {
         SupplierResponseDTO responseDTO = supplierService.create(requestDTO);
-        return Response.status(Response.Status.CREATED).entity(responseDTO).build();
+        return Response.status(Response.Status.CREATED)
+                .entity(ApiResponse.success(responseDTO, "Thêm nhà cung cấp thành công"))
+                .build();
     }
 
     @GET
     @Path("/{id}")
     public Response getById(@PathParam("id") Long id) {
         SupplierResponseDTO responseDTO = supplierService.getById(id);
-        return Response.ok(responseDTO).build();
+        return Response.ok(ApiResponse.success(responseDTO)).build();
     }
 
     @GET
     public Response getAll() {
         List<SupplierResponseDTO> suppliers = supplierService.getAll();
-        return Response.ok(suppliers).build();
+        return Response.ok(ApiResponse.success(suppliers)).build();
     }
 
     @PUT
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, @Valid SupplierRequestDTO requestDTO) {
         SupplierResponseDTO responseDTO = supplierService.update(id, requestDTO);
-        return Response.ok(responseDTO).build();
+        return Response.ok(ApiResponse.success(responseDTO, "Cập nhật nhà cung cấp thành công")).build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {
         supplierService.delete(id);
-        return Response.noContent().build();
+        return Response.ok(ApiResponse.success(null, "Xóa nhà cung cấp thành công")).build();
     }
 }

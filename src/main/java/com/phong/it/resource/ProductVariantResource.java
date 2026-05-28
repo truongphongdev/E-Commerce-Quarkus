@@ -2,6 +2,7 @@ package com.phong.it.resource;
 
 import com.phong.it.dto.request.ProductVariantRequestDTO;
 import com.phong.it.dto.response.ProductVariantResponseDTO;
+import com.phong.it.helper.ApiResponse;
 import com.phong.it.service.ProductVariantService;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
@@ -24,7 +25,9 @@ public class ProductVariantResource {
     @RolesAllowed({"ADMIN"})
     public Response create(@Valid ProductVariantRequestDTO requestDTO) {
         ProductVariantResponseDTO responseDTO = productVariantService.create(requestDTO);
-        return Response.status(Response.Status.CREATED).entity(responseDTO).build();
+        return Response.status(Response.Status.CREATED)
+                .entity(ApiResponse.success(responseDTO, "Tạo biến thể sản phẩm thành công"))
+                .build();
     }
 
     @GET
@@ -32,14 +35,14 @@ public class ProductVariantResource {
     @PermitAll
     public Response getById(@PathParam("id") Long id) {
         ProductVariantResponseDTO responseDTO = productVariantService.getById(id);
-        return Response.ok(responseDTO).build();
+        return Response.ok(ApiResponse.success(responseDTO)).build();
     }
 
     @GET
     @PermitAll
     public Response getAll() {
         List<ProductVariantResponseDTO> variants = productVariantService.getAll();
-        return Response.ok(variants).build();
+        return Response.ok(ApiResponse.success(variants)).build();
     }
 
     @GET
@@ -47,7 +50,7 @@ public class ProductVariantResource {
     @PermitAll
     public Response getByProductId(@PathParam("productId") Long productId) {
         List<ProductVariantResponseDTO> variants = productVariantService.getByProductId(productId);
-        return Response.ok(variants).build();
+        return Response.ok(ApiResponse.success(variants)).build();
     }
 
     @PUT
@@ -55,7 +58,7 @@ public class ProductVariantResource {
     @RolesAllowed({"ADMIN"})
     public Response update(@PathParam("id") Long id, @Valid ProductVariantRequestDTO requestDTO) {
         ProductVariantResponseDTO responseDTO = productVariantService.update(id, requestDTO);
-        return Response.ok(responseDTO).build();
+        return Response.ok(ApiResponse.success(responseDTO, "Cập nhật biến thể sản phẩm thành công")).build();
     }
 
     @DELETE
@@ -63,6 +66,6 @@ public class ProductVariantResource {
     @RolesAllowed({"ADMIN"})
     public Response delete(@PathParam("id") Long id) {
         productVariantService.delete(id);
-        return Response.noContent().build();
+        return Response.ok(ApiResponse.success(null, "Xóa biến thể sản phẩm thành công")).build();
     }
 }

@@ -2,6 +2,7 @@ package com.phong.it.resource;
 
 import com.phong.it.dto.request.ProductRequestDTO;
 import com.phong.it.dto.response.ProductResponseDTO;
+import com.phong.it.helper.ApiResponse;
 import com.phong.it.service.ProductService;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
@@ -24,7 +25,9 @@ public class ProductResource {
     @RolesAllowed({"ADMIN"})
     public Response create(@Valid ProductRequestDTO requestDTO) {
         ProductResponseDTO responseDTO = productService.create(requestDTO);
-        return Response.status(Response.Status.CREATED).entity(responseDTO).build();
+        return Response.status(Response.Status.CREATED)
+                .entity(ApiResponse.success(responseDTO, "Tạo sản phẩm thành công"))
+                .build();
     }
 
     @GET
@@ -32,14 +35,14 @@ public class ProductResource {
     @PermitAll
     public Response getById(@PathParam("id") Long id) {
         ProductResponseDTO responseDTO = productService.getById(id);
-        return Response.ok(responseDTO).build();
+        return Response.ok(ApiResponse.success(responseDTO)).build();
     }
 
     @GET
     @PermitAll
     public Response getAll() {
         List<ProductResponseDTO> products = productService.getAll();
-        return Response.ok(products).build();
+        return Response.ok(ApiResponse.success(products)).build();
     }
 
     @PUT
@@ -47,7 +50,7 @@ public class ProductResource {
     @RolesAllowed({"ADMIN"})
     public Response update(@PathParam("id") Long id, @Valid ProductRequestDTO requestDTO) {
         ProductResponseDTO responseDTO = productService.update(id, requestDTO);
-        return Response.ok(responseDTO).build();
+        return Response.ok(ApiResponse.success(responseDTO, "Cập nhật sản phẩm thành công")).build();
     }
 
     @DELETE
@@ -55,7 +58,7 @@ public class ProductResource {
     @RolesAllowed({"ADMIN"})
     public Response delete(@PathParam("id") Long id) {
         productService.delete(id);
-        return Response.noContent().build();
+        return Response.ok(ApiResponse.success(null, "Xóa sản phẩm thành công")).build();
     }
 
     @GET
@@ -74,6 +77,6 @@ public class ProductResource {
         var result = productService.findWithFilters(
             page, size, keyword, categoryId, brand, minPrice, maxPrice, sortBy
         );
-        return Response.ok(result).build();
+        return Response.ok(ApiResponse.success(result)).build();
     }
 }

@@ -8,6 +8,8 @@ import com.phong.it.mapper.ProductImageMapper;
 import com.phong.it.repository.ProductImageRepository;
 import com.phong.it.repository.ProductRepository;
 import com.phong.it.service.ProductImageService;
+import io.quarkus.cache.CacheResult;
+import io.quarkus.cache.CacheInvalidateAll;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -31,6 +33,7 @@ public class ProductImageServiceImpl implements ProductImageService {
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "product-images")
     public ProductImageResponseDTO create(ProductImageRequestDTO requestDTO) {
         Product product = productRepository.findById(requestDTO.productId());
         if (product == null) {
@@ -50,6 +53,7 @@ public class ProductImageServiceImpl implements ProductImageService {
     }
 
     @Override
+    @CacheResult(cacheName = "product-images")
     public ProductImageResponseDTO getById(Long id) {
         ProductImage image = productImageRepository.findById(id);
         if (image == null) {
@@ -59,6 +63,7 @@ public class ProductImageServiceImpl implements ProductImageService {
     }
 
     @Override
+    @CacheResult(cacheName = "product-images")
     public List<ProductImageResponseDTO> getAll() {
         return productImageRepository.listAll().stream()
                 .map(productImageMapper::toResponseDTO)
@@ -66,6 +71,7 @@ public class ProductImageServiceImpl implements ProductImageService {
     }
 
     @Override
+    @CacheResult(cacheName = "product-images")
     public List<ProductImageResponseDTO> getByProductId(Long productId) {
         return productImageRepository.findByProductId(productId).stream()
                 .map(productImageMapper::toResponseDTO)
@@ -74,6 +80,7 @@ public class ProductImageServiceImpl implements ProductImageService {
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "product-images")
     public ProductImageResponseDTO update(Long id, ProductImageRequestDTO requestDTO) {
         ProductImage image = productImageRepository.findById(id);
         if (image == null) {
@@ -103,6 +110,7 @@ public class ProductImageServiceImpl implements ProductImageService {
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "product-images")
     public void delete(Long id) {
         ProductImage image = productImageRepository.findById(id);
         if (image == null) {

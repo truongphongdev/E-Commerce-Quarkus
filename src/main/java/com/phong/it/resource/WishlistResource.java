@@ -2,6 +2,7 @@ package com.phong.it.resource;
 
 import com.phong.it.dto.request.WishlistRequestDTO;
 import com.phong.it.dto.response.WishlistResponseDTO;
+import com.phong.it.helper.ApiResponse;
 import com.phong.it.service.WishlistService;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
@@ -32,14 +33,16 @@ public class WishlistResource {
     public Response addToWishlist(@Valid WishlistRequestDTO requestDTO) {
         Long userId = getUserId();
         WishlistResponseDTO responseDTO = wishlistService.addToWishlist(userId, requestDTO);
-        return Response.status(Response.Status.CREATED).entity(responseDTO).build();
+        return Response.status(Response.Status.CREATED)
+                .entity(ApiResponse.success(responseDTO, "Thêm vào danh sách yêu thích thành công"))
+                .build();
     }
 
     @GET
     public Response getWishlist() {
         Long userId = getUserId();
         List<WishlistResponseDTO> wishlist = wishlistService.getWishlistByUserId(userId);
-        return Response.ok(wishlist).build();
+        return Response.ok(ApiResponse.success(wishlist)).build();
     }
 
     @DELETE
@@ -47,6 +50,6 @@ public class WishlistResource {
     public Response removeFromWishlist(@PathParam("id") Long id) {
         Long userId = getUserId();
         wishlistService.removeFromWishlist(userId, id);
-        return Response.noContent().build();
+        return Response.ok(ApiResponse.success(null, "Xóa khỏi danh sách yêu thích thành công")).build();
     }
 }

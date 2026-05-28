@@ -2,6 +2,7 @@ package com.phong.it.resource;
 
 import com.phong.it.dto.request.CouponRequestDTO;
 import com.phong.it.dto.response.CouponResponseDTO;
+import com.phong.it.helper.ApiResponse;
 import com.phong.it.service.CouponService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -25,34 +26,36 @@ public class CouponResource {
     @GET
     public Response getAll() {
         List<CouponResponseDTO> coupons = couponService.getAll();
-        return Response.ok(coupons).build();
+        return Response.ok(ApiResponse.success(coupons)).build();
     }
 
     @GET
     @Path("/{id}")
     public Response getById(@PathParam("id") Long id) {
         CouponResponseDTO coupon = couponService.getById(id);
-        return Response.ok(coupon).build();
+        return Response.ok(ApiResponse.success(coupon)).build();
     }
 
     @POST
     public Response create(@Valid CouponRequestDTO requestDTO) {
         CouponResponseDTO created = couponService.create(requestDTO);
-        return Response.status(Response.Status.CREATED).entity(created).build();
+        return Response.status(Response.Status.CREATED)
+                .entity(ApiResponse.success(created, "Tạo mã giảm giá thành công"))
+                .build();
     }
 
     @PUT
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, @Valid CouponRequestDTO requestDTO) {
         CouponResponseDTO updated = couponService.update(id, requestDTO);
-        return Response.ok(updated).build();
+        return Response.ok(ApiResponse.success(updated, "Cập nhật mã giảm giá thành công")).build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {
         couponService.delete(id);
-        return Response.noContent().build();
+        return Response.ok(ApiResponse.success(null, "Xóa mã giảm giá thành công")).build();
     }
 
     @GET
@@ -73,6 +76,6 @@ public class CouponResource {
         response.put("coupon", validCoupon);
         response.put("discountAmount", discountAmount);
 
-        return Response.ok(response).build();
+        return Response.ok(ApiResponse.success(response, "Áp dụng mã giảm giá thành công")).build();
     }
 }

@@ -2,6 +2,7 @@ package com.phong.it.resource;
 
 import com.phong.it.dto.request.AddToCartRequestDTO;
 import com.phong.it.dto.response.CartResponseDTO;
+import com.phong.it.helper.ApiResponse;
 import com.phong.it.service.CartService;
 import io.quarkus.security.Authenticated;
 import org.eclipse.microprofile.jwt.JsonWebToken;
@@ -31,7 +32,7 @@ public class CartResource {
     public Response getCart() {
         Long userId = getUserId();
         CartResponseDTO responseDTO = cartService.getCartByUserId(userId);
-        return Response.ok(responseDTO).build();
+        return Response.ok(ApiResponse.success(responseDTO)).build();
     }
 
     @POST
@@ -39,7 +40,7 @@ public class CartResource {
     public Response addToCart(@Valid AddToCartRequestDTO requestDTO) {
         Long userId = getUserId();
         CartResponseDTO responseDTO = cartService.addToCart(userId, requestDTO);
-        return Response.ok(responseDTO).build();
+        return Response.ok(ApiResponse.success(responseDTO, "Thêm sản phẩm vào giỏ hàng thành công")).build();
     }
 
     @PUT
@@ -52,7 +53,7 @@ public class CartResource {
             throw new BadRequestException("Vui lòng cung cấp tham số quantity (số lượng)");
         }
         CartResponseDTO responseDTO = cartService.updateQuantity(userId, itemId, quantity);
-        return Response.ok(responseDTO).build();
+        return Response.ok(ApiResponse.success(responseDTO, "Cập nhật số lượng thành công")).build();
     }
 
     @DELETE
@@ -60,6 +61,6 @@ public class CartResource {
     public Response removeItem(@PathParam("itemId") Long itemId) {
         Long userId = getUserId();
         CartResponseDTO responseDTO = cartService.removeItem(userId, itemId);
-        return Response.ok(responseDTO).build();
+        return Response.ok(ApiResponse.success(responseDTO, "Xóa sản phẩm khỏi giỏ hàng thành công")).build();
     }
 }

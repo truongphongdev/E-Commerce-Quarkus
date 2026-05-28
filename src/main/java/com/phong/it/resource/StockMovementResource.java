@@ -2,6 +2,7 @@ package com.phong.it.resource;
 
 import com.phong.it.dto.request.StockMovementRequestDTO;
 import com.phong.it.dto.response.StockMovementResponseDTO;
+import com.phong.it.helper.ApiResponse;
 import com.phong.it.service.StockMovementService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -23,19 +24,21 @@ public class StockMovementResource {
     @POST
     public Response create(@Valid StockMovementRequestDTO requestDTO) {
         StockMovementResponseDTO responseDTO = stockMovementService.create(requestDTO);
-        return Response.status(Response.Status.CREATED).entity(responseDTO).build();
+        return Response.status(Response.Status.CREATED)
+                .entity(ApiResponse.success(responseDTO, "Tạo lịch sử kho thành công"))
+                .build();
     }
 
     @GET
     @Path("/{id}")
     public Response getById(@PathParam("id") Long id) {
         StockMovementResponseDTO responseDTO = stockMovementService.getById(id);
-        return Response.ok(responseDTO).build();
+        return Response.ok(ApiResponse.success(responseDTO)).build();
     }
 
     @GET
     public Response getAll() {
         List<StockMovementResponseDTO> stockMovements = stockMovementService.getAll();
-        return Response.ok(stockMovements).build();
+        return Response.ok(ApiResponse.success(stockMovements)).build();
     }
 }

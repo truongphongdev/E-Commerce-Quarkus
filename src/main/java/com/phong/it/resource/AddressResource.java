@@ -2,6 +2,7 @@ package com.phong.it.resource;
 
 import com.phong.it.dto.request.AddressRequestDTO;
 import com.phong.it.dto.response.AddressResponseDTO;
+import com.phong.it.helper.ApiResponse;
 import com.phong.it.service.AddressService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -25,7 +26,7 @@ public class AddressResource {
             throw new BadRequestException("Vui lòng cung cấp User-ID trong Header");
         }
         List<AddressResponseDTO> addresses = addressService.getByUserId(userId);
-        return Response.ok(addresses).build();
+        return Response.ok(ApiResponse.success(addresses)).build();
     }
 
     @POST
@@ -34,7 +35,9 @@ public class AddressResource {
             throw new BadRequestException("Vui lòng cung cấp User-ID trong Header");
         }
         AddressResponseDTO responseDTO = addressService.create(userId, requestDTO);
-        return Response.status(Response.Status.CREATED).entity(responseDTO).build();
+        return Response.status(Response.Status.CREATED)
+                .entity(ApiResponse.success(responseDTO, "Tạo địa chỉ thành công"))
+                .build();
     }
 
     @PUT
@@ -44,7 +47,7 @@ public class AddressResource {
             throw new BadRequestException("Vui lòng cung cấp User-ID trong Header");
         }
         AddressResponseDTO responseDTO = addressService.update(userId, id, requestDTO);
-        return Response.ok(responseDTO).build();
+        return Response.ok(ApiResponse.success(responseDTO, "Cập nhật địa chỉ thành công")).build();
     }
 
     @DELETE
@@ -54,7 +57,7 @@ public class AddressResource {
             throw new BadRequestException("Vui lòng cung cấp User-ID trong Header");
         }
         addressService.delete(userId, id);
-        return Response.noContent().build();
+        return Response.ok(ApiResponse.success(null, "Xóa địa chỉ thành công")).build();
     }
 
     @PATCH
@@ -64,6 +67,6 @@ public class AddressResource {
             throw new BadRequestException("Vui lòng cung cấp User-ID trong Header");
         }
         AddressResponseDTO responseDTO = addressService.setDefault(userId, id);
-        return Response.ok(responseDTO).build();
+        return Response.ok(ApiResponse.success(responseDTO, "Đặt địa chỉ mặc định thành công")).build();
     }
 }

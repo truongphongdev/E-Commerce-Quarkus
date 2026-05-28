@@ -10,6 +10,8 @@ import com.phong.it.repository.ProductRepository;
 import com.phong.it.repository.ReviewRepository;
 import com.phong.it.repository.UserRepository;
 import com.phong.it.service.ReviewService;
+import io.quarkus.cache.CacheResult;
+import io.quarkus.cache.CacheInvalidateAll;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -35,6 +37,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "reviews")
     public ReviewResponseDTO create(Long userId, ReviewRequestDTO requestDTO) {
         Product product = productRepository.findById(requestDTO.productId());
         if (product == null) {
@@ -57,6 +60,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @CacheResult(cacheName = "reviews")
     public ReviewResponseDTO getById(Long id) {
         Review review = reviewRepository.findById(id);
         if (review == null) {
@@ -66,6 +70,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @CacheResult(cacheName = "reviews")
     public List<ReviewResponseDTO> getAll() {
         return reviewRepository.listAll().stream()
                 .map(reviewMapper::toResponseDTO)
@@ -73,6 +78,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @CacheResult(cacheName = "reviews")
     public List<ReviewResponseDTO> getReviewsByProductId(Long productId, boolean approvedOnly) {
         List<Review> reviews;
         if (approvedOnly) {
@@ -87,6 +93,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "reviews")
     public ReviewResponseDTO update(Long userId, Long id, ReviewRequestDTO requestDTO) {
         Review review = reviewRepository.findById(id);
         if (review == null) {
@@ -106,6 +113,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "reviews")
     public ReviewResponseDTO approveReview(Long id) {
         Review review = reviewRepository.findById(id);
         if (review == null) {
@@ -117,6 +125,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "reviews")
     public void delete(Long userId, Long id) {
         Review review = reviewRepository.findById(id);
         if (review == null) {

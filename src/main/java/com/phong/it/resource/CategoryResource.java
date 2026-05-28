@@ -2,6 +2,7 @@ package com.phong.it.resource;
 
 import com.phong.it.dto.request.CategoryRequestDTO;
 import com.phong.it.dto.response.CategoryResponseDTO;
+import com.phong.it.helper.ApiResponse;
 import com.phong.it.service.CategoryService;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
@@ -24,7 +25,9 @@ public class CategoryResource {
     @RolesAllowed({"ADMIN"})
     public Response create(@Valid CategoryRequestDTO requestDTO) {
         CategoryResponseDTO responseDTO = categoryService.create(requestDTO);
-        return Response.status(Response.Status.CREATED).entity(responseDTO).build();
+        return Response.status(Response.Status.CREATED)
+                .entity(ApiResponse.success(responseDTO, "Tạo danh mục thành công"))
+                .build();
     }
 
     @GET
@@ -32,14 +35,14 @@ public class CategoryResource {
     @PermitAll
     public Response getById(@PathParam("id") Long id) {
         CategoryResponseDTO responseDTO = categoryService.getById(id);
-        return Response.ok(responseDTO).build();
+        return Response.ok(ApiResponse.success(responseDTO)).build();
     }
 
     @GET
     @PermitAll
     public Response getAll() {
         List<CategoryResponseDTO> categories = categoryService.getAll();
-        return Response.ok(categories).build();
+        return Response.ok(ApiResponse.success(categories)).build();
     }
 
     @GET
@@ -47,7 +50,7 @@ public class CategoryResource {
     @PermitAll
     public Response getRootCategories() {
         List<CategoryResponseDTO> roots = categoryService.getRootCategories();
-        return Response.ok(roots).build();
+        return Response.ok(ApiResponse.success(roots)).build();
     }
 
     @PUT
@@ -55,7 +58,7 @@ public class CategoryResource {
     @RolesAllowed({"ADMIN"})
     public Response update(@PathParam("id") Long id, @Valid CategoryRequestDTO requestDTO) {
         CategoryResponseDTO responseDTO = categoryService.update(id, requestDTO);
-        return Response.ok(responseDTO).build();
+        return Response.ok(ApiResponse.success(responseDTO, "Cập nhật danh mục thành công")).build();
     }
 
     @DELETE
@@ -63,6 +66,6 @@ public class CategoryResource {
     @RolesAllowed({"ADMIN"})
     public Response delete(@PathParam("id") Long id) {
         categoryService.delete(id);
-        return Response.noContent().build();
+        return Response.ok(ApiResponse.success(null, "Xóa danh mục thành công")).build();
     }
 }

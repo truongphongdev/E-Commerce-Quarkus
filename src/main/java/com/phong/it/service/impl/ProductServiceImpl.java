@@ -9,6 +9,8 @@ import com.phong.it.entity.Supplier;
 import com.phong.it.mapper.ProductMapper;
 import com.phong.it.repository.ProductRepository;
 import com.phong.it.service.ProductService;
+import io.quarkus.cache.CacheResult;
+import io.quarkus.cache.CacheInvalidateAll;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -30,6 +32,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "products")
     public ProductResponseDTO create(ProductRequestDTO requestDTO) {
         Product product = productMapper.toEntity(requestDTO);
 
@@ -68,6 +71,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CacheResult(cacheName = "products")
     public ProductResponseDTO getById(Long id) {
         Product product = productRepository.findById(id);
         if (product == null) {
@@ -77,6 +81,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CacheResult(cacheName = "products")
     public List<ProductResponseDTO> getAll() {
         return productRepository.listAll().stream()
                 .map(productMapper::toResponseDTO)
@@ -85,6 +90,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "products")
     public ProductResponseDTO update(Long id, ProductRequestDTO requestDTO) {
         Product product = productRepository.findById(id);
         if (product == null) {
@@ -133,6 +139,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "products")
     public void delete(Long id) {
         boolean deleted = productRepository.deleteById(id);
         if (!deleted) {
@@ -141,6 +148,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CacheResult(cacheName = "products")
     public PageResponseDTO<ProductResponseDTO> findWithFilters(
         int page, int size, String keyword, Long categoryId, 
         String brand, BigDecimal minPrice, BigDecimal maxPrice, String sortBy) {
@@ -162,5 +170,4 @@ public class ProductServiceImpl implements ProductService {
                 page >= panachePage.pageCount() - 1 // Có phải trang cuối không
         );
     }
-
 }

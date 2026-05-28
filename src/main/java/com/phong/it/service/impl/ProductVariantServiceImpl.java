@@ -8,6 +8,8 @@ import com.phong.it.mapper.ProductVariantMapper;
 import com.phong.it.repository.ProductRepository;
 import com.phong.it.repository.ProductVariantRepository;
 import com.phong.it.service.ProductVariantService;
+import io.quarkus.cache.CacheResult;
+import io.quarkus.cache.CacheInvalidateAll;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -31,6 +33,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "product-variants")
     public ProductVariantResponseDTO create(ProductVariantRequestDTO requestDTO) {
         // Kiểm tra SKU duy nhất
         ProductVariant existingSku = productVariantRepository.findBySku(requestDTO.sku());
@@ -52,6 +55,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     }
 
     @Override
+    @CacheResult(cacheName = "product-variants")
     public ProductVariantResponseDTO getById(Long id) {
         ProductVariant variant = productVariantRepository.findById(id);
         if (variant == null) {
@@ -61,6 +65,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     }
 
     @Override
+    @CacheResult(cacheName = "product-variants")
     public List<ProductVariantResponseDTO> getAll() {
         return productVariantRepository.listAll().stream()
                 .map(productVariantMapper::toResponseDTO)
@@ -68,6 +73,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     }
 
     @Override
+    @CacheResult(cacheName = "product-variants")
     public List<ProductVariantResponseDTO> getByProductId(Long productId) {
         return productVariantRepository.findByProductId(productId).stream()
                 .map(productVariantMapper::toResponseDTO)
@@ -76,6 +82,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "product-variants")
     public ProductVariantResponseDTO update(Long id, ProductVariantRequestDTO requestDTO) {
         ProductVariant variant = productVariantRepository.findById(id);
         if (variant == null) {
@@ -109,6 +116,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "product-variants")
     public void delete(Long id) {
         ProductVariant variant = productVariantRepository.findById(id);
         if (variant == null) {

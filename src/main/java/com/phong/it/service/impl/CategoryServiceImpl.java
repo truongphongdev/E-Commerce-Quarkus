@@ -6,6 +6,8 @@ import com.phong.it.entity.Category;
 import com.phong.it.mapper.CategoryMapper;
 import com.phong.it.repository.CategoryRepository;
 import com.phong.it.service.CategoryService;
+import io.quarkus.cache.CacheResult;
+import io.quarkus.cache.CacheInvalidateAll;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -26,6 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "categories")
     public CategoryResponseDTO create(CategoryRequestDTO requestDTO) {
         Category category = categoryMapper.toEntity(requestDTO);
 
@@ -44,6 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @CacheResult(cacheName = "categories")
     public CategoryResponseDTO getById(Long id) {
         Category category = categoryRepository.findById(id);
         if (category == null) {
@@ -53,6 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @CacheResult(cacheName = "categories")
     public List<CategoryResponseDTO> getAll() {
         return categoryRepository.listAll().stream()
                 .map(categoryMapper::toDto)
@@ -60,6 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @CacheResult(cacheName = "categories")
     public List<CategoryResponseDTO> getRootCategories() {
         return categoryRepository.findRootCategories().stream()
                 .map(categoryMapper::toDto)
@@ -68,6 +74,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "categories")
     public CategoryResponseDTO update(Long id, CategoryRequestDTO requestDTO) {
         Category category = categoryRepository.findById(id);
         if (category == null) {
@@ -103,6 +110,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
+    @CacheInvalidateAll(cacheName = "categories")
     public void delete(Long id) {
         Category category = categoryRepository.findById(id);
         if (category == null) {
